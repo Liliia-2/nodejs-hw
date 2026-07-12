@@ -3,9 +3,59 @@ import { Note } from '../models/note.js';
 
 export const getAllNotes = async (req, res, next) => {
   try {
-    const notes = await Note.find();
+    const {
+      page = 1,
+      perPage = 10,
+      tag,
+      search,
+    } = req.query;
 
-    res.status(200).json(notes);
+    const skip = (page - 1) * perPage;
+
+    const notesQuery = Note.find();
+
+    // Фільтрація по тегу
+    if (tag) {
+      notesQuery.where({
+        tag,
+      });
+    }
+
+    // Пошук по title та content
+    if (search) {
+      notesQuery.where({
+        $or: [
+          {
+            title: {
+              $regex: search,
+              $options: 'i',
+            },
+          },
+          {
+            content: {
+              $regex: search,
+              $options: 'i',
+            },
+          },
+        ],
+      });
+    }
+
+    const notes = await notesQuery
+      .skip(skip)
+      .limit(perPage);
+
+    const totalNotes = await Note.countDocuments(
+      notesQuery.getFilter(),
+    );
+
+    res.status(200).json({
+      page: Number(page),
+      perPage: Number(perPage),
+      totalNotes,
+      totalPages: Math.ceil(totalNotes / perPage),
+      notes,
+    });
   } catch (error) {
     next(error);
   }
