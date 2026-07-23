@@ -23,27 +23,27 @@ const router = Router();
 router.use(authenticate);
 
 router.get(
-  '/',
+  '/notes',
   celebrate(getAllNotesSchema),
   getAllNotes,
 );
 router.get(
-  '/:noteId',
+  '/notes/:noteId',
   celebrate(noteIdSchema),
   getNoteById,
 );
 router.post(
-  '/',
+  '/notes',
   celebrate(createNoteSchema),
   createNote,
 );
 router.patch(
-  '/:noteId',
+  '/notes/:noteId',
   celebrate(updateNoteSchema),
   updateNote,
 );
 router.delete(
-  '/:noteId',
+  '/notes/:noteId',
   celebrate(noteIdSchema),
   deleteNote,
 );

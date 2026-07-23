@@ -33,9 +33,9 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/auth', authRoutes);
+app.use(authRoutes);
 
-app.use('/notes', notesRoutes);
+app.use(notesRoutes);
 
 app.use(notFoundHandler);
 
