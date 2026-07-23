@@ -1,5 +1,10 @@
+import dns from 'node:dns';
+
+dns.setServers(['8.8.8.8']);
+
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { errors } from 'celebrate';
 
@@ -8,6 +13,7 @@ import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import notesRoutes from './routes/notesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 
@@ -17,7 +23,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(logger);
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
+app.use('/auth', authRoutes);
 
 app.use(notesRoutes);
 

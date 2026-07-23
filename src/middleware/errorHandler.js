@@ -1,14 +1,31 @@
+// import { HttpError } from 'http-errors';
+
+// export const errorHandler = (err, req, res, next) => {
+//   if (err instanceof HttpError) {
+//     res.status(err.status).json({
+//       message: err.message,
+//     });
+//     return;
+//   }
+
+//   res.status(500).json({
+//     message: 'Something went wrong',
+//   });
+// };
+
+
 import { HttpError } from 'http-errors';
 
 export const errorHandler = (err, req, res, next) => {
+  console.error('❌', err);
+
   if (err instanceof HttpError) {
-    res.status(err.status).json({
+    return res.status(err.status).json({
       message: err.message,
     });
-    return;
   }
 
-  res.status(500).json({
-    message: 'Something went wrong',
+  return res.status(500).json({
+    message: err.message || 'Something went wrong',
   });
 };
