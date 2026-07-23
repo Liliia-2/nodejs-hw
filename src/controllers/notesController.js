@@ -12,7 +12,7 @@ export const getAllNotes = async (req, res, next) => {
 
     const skip = (page - 1) * perPage;
 
-    const notesQuery = Note.find({userId: req.uer._id,});
+    const notesQuery = Note.find({userId: req.user._id,});
 
     // Фільтрація по тегу
     if (tag) {
@@ -84,7 +84,7 @@ export const createNote = async (req, res, next) => {
   try {
     const note = await Note.create({
       ...req.body,
-      userId: req.user.id,
+      userId: req.user._id,
     });
 
     res.status(201).json(note);

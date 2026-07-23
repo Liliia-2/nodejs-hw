@@ -25,9 +25,17 @@ app.use(logger);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Server is running',
+  });
+});
+
 app.use('/auth', authRoutes);
 
-app.use(notesRoutes);
+app.use('/notes', notesRoutes);
 
 app.use(notFoundHandler);
 
