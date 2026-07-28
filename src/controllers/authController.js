@@ -169,6 +169,7 @@ const resetLink = `${process.env.FRONTEND_DOMAIN}/reset-password?token=${token}`
 
   try {
     await sendEmail({
+      from: process.env.SMTP_FROM,
       to: user.email,
       subject: 'Reset your password',
       html,
